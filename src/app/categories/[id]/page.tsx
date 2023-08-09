@@ -5,9 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CATEGORY_CONTENT } from "@/contents/categories";
 import { Fetcher, fetcher, useSwr } from "@/lib/fetcher";
 import { useLanguage } from "@/providers/lang-provider";
-import { Category } from "@prisma/client";
 import { notFound } from "next/navigation";
-import { Criteria } from "@/types";
+import { Category, Criteria } from "@/types";
 import { Edit2 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -36,7 +35,7 @@ export default function CategoryDetail({ params }: { params: { id: string } }) {
 
   React.useEffect(() => {
     if (data && data.criterias) {
-      const _criterias: Criteria[] = JSON.parse(data.criterias);
+      const _criterias = data.criterias as Criteria[];
       setCriterias(_criterias);
     }
   }, [data]);

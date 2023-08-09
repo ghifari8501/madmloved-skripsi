@@ -48,14 +48,14 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const data = await prisma.category.findMany({});
+    const data = await prisma.category.findMany();
 
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
       {
         message: "Someting went wrong",
-        stack: error?.stack,
+        error,
       },
       { status: 500 }
     );

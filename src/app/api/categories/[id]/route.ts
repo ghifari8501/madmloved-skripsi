@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-                                                // ⬇️ Here is the `params` property
-export async function GET(req: NextRequest, { params }: { params: { id: string } } ) {
-
+// ⬇️ Here is the `params` property
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const data = await prisma.category.findUnique({where: {id: params.id}});
+    const data = await prisma.category.findUnique({ where: { id: params.id } });
 
-    if(!data){
-      return NextResponse.json({message: "Category not found"}, {status: 404});
+    if (!data) {
+      return NextResponse.json(
+        { message: "Category not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(data);
@@ -21,28 +26,47 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-
 export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
-  const data = await prisma.category.findFirst({ where: { id } });
 
-  if (!data)
+  try {
+    const data = await prisma.category.findFirst({ where: { id } });
+
+    if (!data)
+      return NextResponse.json(
+        { message: "Category does not exist." },
+        { status: 404 }
+      );
+
+    const body = await request.json();
+
+    data.criterias;
+
+    // return NextResponse.json(body);
+
+    const update = await prisma.category.update({
+      where: { id },
+      data: { ...body },
+    });
+    return NextResponse.json({ ...update });
+  } catch (error) {
     return NextResponse.json(
-      { message: "Category does not exist." },
-      { status: 404 }
+      { message: "Something went wrong", error, stack: error?.stack },
+      { status: 500 }
     );
+  }
+  // const data = await prisma.category.findFirst({ where: { id } });
+  // const body = await request.json();
 
-  const body = await request.json();
+  // const update = await prisma.category.update({
+  //   where: { id },
+  //   data: { ...body },
+  // });
 
-  const update = await prisma.category.update({
-    where: { id },
-    data: { ...body },
-  });
-
-  return NextResponse.json(update);
+  // return NextResponse.json(update);
 }
 
 export async function DELETE(

@@ -3,9 +3,8 @@ import * as React from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Fetcher, fetcher, useSwr } from "@/lib/fetcher";
-import { Category } from "@prisma/client";
 import { notFound, useRouter } from "next/navigation";
-import { Criteria } from "@/types";
+import { Criteria, Category } from "@/types";
 import { CriteriaProvider, useCriteria } from "@/providers/criteria-provider";
 import { CategoryPlayground } from "@/components/category/criteria-playground";
 import { useToast } from "@/components/ui/use-toast";
@@ -34,7 +33,7 @@ export default function CategoryEdit({ params }: { params: { id: string } }) {
 
   React.useEffect(() => {
     if (data && data.criterias) {
-      const _criterias: Criteria[] = JSON.parse(data.criterias);
+      const _criterias: Criteria[] = data.criterias;
       setCriterias(_criterias);
     }
   }, [data]);
@@ -45,7 +44,7 @@ export default function CategoryEdit({ params }: { params: { id: string } }) {
       url: `/categories/${id}`,
       request: {
         method: "PUT",
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data }),
       },
     })
       .then(() => {

@@ -1,4 +1,4 @@
-import { Category } from "@prisma/client";
+import { Category } from "@/types";
 import * as React from "react";
 import { Input } from "../ui/input";
 import { ImageEditor } from "../image-editor";

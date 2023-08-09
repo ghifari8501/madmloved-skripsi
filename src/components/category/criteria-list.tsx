@@ -10,13 +10,19 @@ export function CriteriaList() {
   const { criterias, addCriteria, selected, setSelected, moveDown, moveUp } =
     useCriteria();
 
-  useKeyboardShortcut(["escape"], () => {
-    setSelected(null);
-  });
-
   return (
     <div className=" h-screen w-64 overflow-hidden border  bg-background ">
-      <ScrollArea className="h-full w-full py-4">
+      <ScrollArea className="h-full w-full py-4 ">
+        <div className="flex justify-between items-center px-2 mb-4">
+          <Button
+            size={"sm"}
+            variant={"outline"}
+            onClick={() => setSelected(null)}
+            className="text-xs"
+          >
+            Category Properties
+          </Button>
+        </div>
         <div className="flex justify-between items-center px-2">
           <p className="text-sm text-muted-foreground">Criterias</p>
           <Button
@@ -39,12 +45,7 @@ export function CriteriaList() {
               key={i}
               onClick={() => setSelected(i)}
             >
-              <div
-                className="text-sm cursor-pointer"
-                
-              >
-                {c.name}
-              </div>
+              <div className="text-sm cursor-pointer">{c.name}</div>
               <div className="flex gap-1 items-center">
                 <Button
                   size={"icon"}
@@ -65,8 +66,6 @@ export function CriteriaList() {
                 >
                   <ArrowDown size={12} />
                 </Button>
-
-             
               </div>
             </div>
           ))}

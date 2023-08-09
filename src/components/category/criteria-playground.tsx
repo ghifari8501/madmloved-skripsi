@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { useLanguage } from "@/providers/lang-provider";
 import { useRouter } from "next/navigation";
-import { Criteria } from "@/types";
+import { Criteria, Category } from "@/types";
 import { ArrowLeft, Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCriteria } from "@/providers/criteria-provider";
@@ -13,7 +13,6 @@ import { CriteriaInput } from "./criteria-input";
 
 import CurrencyInput from "react-currency-input-field";
 import { CateogryProperties } from "./category-properties";
-import { Category } from "@prisma/client";
 
 function formatCurrency(number: number) {
   return new Intl.NumberFormat("id-ID", {
@@ -42,7 +41,7 @@ export function CategoryPlayground({
 
   const [madmInput, setMadmInput] = React.useState(0);
   const [madmOutput, setMadmOutput] = React.useState(0);
-  const [isDebugging, setisDebugging] = React.useState(false);
+  const [isDebugging, setisDebugging] = React.useState(true);
 
   const [_data, setData] = React.useState(data);
 
@@ -56,6 +55,7 @@ export function CategoryPlayground({
 
   return (
     <div className="flex flex-col">
+      {/* <div>{JSON.stringify(_data.criterias)}</div> */}
       <div className="flex justify-between p-2 border-border border-b">
         <div className="flex items-center gap-2 text-lg font-medium">
           <Button
@@ -69,9 +69,9 @@ export function CategoryPlayground({
           {_data.name}
         </div>
         <Button
-          onClick={() =>
-            onSave({ ..._data, criterias: JSON.stringify(criterias) })
-          }
+          onClick={() => {
+            onSave({ ..._data, criterias, id: undefined });
+          }}
           disabled={isLoading}
         >
           {isLoading && (

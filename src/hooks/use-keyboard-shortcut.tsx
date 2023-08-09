@@ -17,7 +17,7 @@ export const useKeyboardShortcut = (
             (typeof key === "string" && event.key.toLowerCase() === key)
         )
       ) {
-        event.preventDefault();
+        // event.preventDefault();
         callback(event);
       }
     };

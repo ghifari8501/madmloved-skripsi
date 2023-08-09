@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongodb"]
 }
 
 datasource db {
@@ -45,7 +46,7 @@ model Category {
   id          String    @id @default(uuid()) @map("_id")
   name        String
   description String?
-  criterias   String?
+  criterias   Json[]    @default([])
   published   Boolean   @default(false)
   thumbnail   String?
   createdAt   DateTime  @default(now()) @map("created_at")
@@ -59,7 +60,7 @@ model Product {
   id          String   @id @default(uuid()) @map("_id")
   name        String
   description String?
-  criterias   String?
+  criterias   Json[]   @default([])
   published   Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @default(now()) @map("updated_at")

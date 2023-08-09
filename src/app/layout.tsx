@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { LanguageProvider } from "@/providers/lang-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { NextAuthProvider } from "@/providers/next-auth-providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,13 +22,15 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <LanguageProvider language="id">
-        <body className={inter.className}>
-          <NavMain />
-          <Toaster />
-          {children}
-        </body>
-      </LanguageProvider>
+      <NextAuthProvider>
+        <LanguageProvider language="id">
+          <body className={inter.className}>
+            <NavMain />
+            <Toaster />
+            {children}
+          </body>
+        </LanguageProvider>
+      </NextAuthProvider>
     </html>
   );
 }

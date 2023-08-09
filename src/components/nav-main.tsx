@@ -8,6 +8,12 @@ import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { Toggle } from "./ui/toggle";
+import { signOut, useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { User } from "lucide-react";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
+import { UserAvatar } from "./user-avatar";
 
 type NavLinkProps = {
   href: string;
@@ -81,6 +87,7 @@ export function Navbar({ className, children, ...props }: NavBarProps) {
 
 export function NavMain() {
   const { lang, setLang } = useLanguage();
+  const { data: session, status } = useSession();
 
   return (
     <Navbar className="px-4 py-2 h-16 items-center  border-b sticky z-50 top-0">
@@ -95,20 +102,23 @@ export function NavMain() {
         </NavLink>
       ))}
       <div className="flex grow justify-end gap-2">
-        <Toggle
-          aria-label="Toggle lang"
-          pressed={lang === "en"}
-          onClick={() => setLang("en")}
-        >
-          EN
-        </Toggle>
-        <Toggle
-          aria-label="Toggle lang"
-          pressed={lang === "id"}
-          onClick={() => setLang("id")}
-        >
-          ID
-        </Toggle>
+        {status === "authenticated" ? (
+          <div>
+            <UserAvatar
+              image={session.user?.image}
+              name={session.user?.email}
+            />
+          </div>
+        ) : (
+          <div>
+            <Link
+              href={"/login"}
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
+              Sign In
+            </Link>
+          </div>
+        )}
       </div>
     </Navbar>
   );
